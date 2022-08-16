@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+    <TextView
+     android:id="@+id/primo"
+     android:layout_width="100dp"
+     android:layout_height="20dp"
+     app:layout_constraintTop_toTopOf="parent"
+     app:layout_constraintLeft_toLeftOf="parent"
+     android:text="primo"
+     android:layout_margin="20dp"
+     />
+
+    <EditText
+        android:id="@+id/secondo"
+        android:layout_width="300dp"
+        android:layout_height="50dp"
+        android:layout_margin="20dp"
+        app:layout_constraintTop_toBottomOf="@id/primo"
+        app:layout_constraintLeft_toLeftOf="@id/primo"
+        android:hint="secondo"
+        />
+    <Button
+        android:id="@+id/invia"
+        android:layout_height="50dp"
+        android:layout_width="300dp"
+        android:layout_margin="20dp"
+        android:text="invia"
+        app:layout_constraintLeft_toLeftOf="@id/secondo"
+        app:layout_constraintTop_toBottomOf="@id/secondo"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="500dp"
+        app:layout_constraintTop_toBottomOf="@id/invia"
+        app:layout_constraintLeft_toLeftOf="@id/invia"
+        android:layout_margin="20dp"
+        android:orientation="vertical"
+        >
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:id="@+id/nome"
+            android:hint="nome"
+            />
+
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
