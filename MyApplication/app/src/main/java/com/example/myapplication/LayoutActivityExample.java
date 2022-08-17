@@ -1,5 +1,7 @@
 package com.example.myapplication;
 
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -9,7 +11,10 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 import androidx.navigation.ui.AppBarConfiguration;
+
+import com.example.myapplication.commons.fragments.ListaContatti;
 import com.example.myapplication.databinding.ActivityLayoutExampleBinding;
 
 public class LayoutActivityExample extends AppCompatActivity {
@@ -19,6 +24,7 @@ public class LayoutActivityExample extends AppCompatActivity {
     private ActivityLayoutExampleBinding binding;
     String value;
     EditText input;
+    ListaContatti lista;
 
 
 
@@ -40,11 +46,16 @@ public class LayoutActivityExample extends AppCompatActivity {
         TextView primo = findViewById(R.id.primo);
         String nome = (String) getIntent().getExtras().get("nome");
         primo.setText(nome);
-        input = findViewById(R.id.nome);
+        input = findViewById(R.id.secondo);
         if (value!=null){
             input.setText(value);
         }
 
+        FragmentManager manager = getFragmentManager();
+        FragmentTransaction transaction = manager.beginTransaction();
+        lista = new ListaContatti();
+        transaction.add( R.id.appender, lista );
+        transaction.commit();
 
         Button indietro = findViewById(R.id.invia);
 
