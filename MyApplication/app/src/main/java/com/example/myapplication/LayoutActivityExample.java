@@ -14,17 +14,19 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.ui.AppBarConfiguration;
 
+import com.example.myapplication.Interfaces.ButtonComunicator;
+import com.example.myapplication.commons.fragments.ButtonsFragment;
 import com.example.myapplication.commons.fragments.ListaContatti;
 import com.example.myapplication.databinding.ActivityLayoutExampleBinding;
 
-public class LayoutActivityExample extends AppCompatActivity {
+public class LayoutActivityExample extends AppCompatActivity implements ButtonComunicator {
 
     private static final int CODE_ONE=1;
     private AppBarConfiguration appBarConfiguration;
     private ActivityLayoutExampleBinding binding;
     String value;
     EditText input;
-    ListaContatti lista;
+    ButtonsFragment lista;
 
 
 
@@ -53,7 +55,7 @@ public class LayoutActivityExample extends AppCompatActivity {
 
         FragmentManager manager = getFragmentManager();
         FragmentTransaction transaction = manager.beginTransaction();
-        lista = new ListaContatti();
+        lista = new ButtonsFragment();
         transaction.add( R.id.appender, lista );
         transaction.commit();
 
@@ -78,6 +80,8 @@ public class LayoutActivityExample extends AppCompatActivity {
         });
     }
 
+
+
     @Override
     protected void onSaveInstanceState(@NonNull Bundle outState) {
 
@@ -85,5 +89,13 @@ public class LayoutActivityExample extends AppCompatActivity {
             outState.putString("valore",input.getText().toString());
         }
         super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    public void setButton(String active) {
+        FragmentManager manager = getFragmentManager();
+        FragmentTransaction transaction = manager.beginTransaction();
+        transaction.replace(R.id.appender, new ListaContatti());
+        transaction.commit();
     }
 }
