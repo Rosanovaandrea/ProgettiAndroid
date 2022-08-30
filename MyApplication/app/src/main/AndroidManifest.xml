@@ -14,6 +14,12 @@
         android:theme="@style/Theme.MyApplication"
         tools:targetApi="31">
         <activity
+            android:name=".IntentActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ActivityInputs"
+            android:exported="false" />
+        <activity
             android:name=".LayoutActivityExample"
             android:exported="false"
             android:label="@string/title_activity_layout_example"
@@ -30,5 +36,6 @@
             </intent-filter>
         </activity>
     </application>
+
 
 </manifest>

@@ -4,8 +4,11 @@ import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -27,6 +30,7 @@ public class LayoutActivityExample extends AppCompatActivity implements ButtonCo
     String value;
     EditText input;
     ButtonsFragment lista;
+    Button avanti;
 
 
 
@@ -34,8 +38,10 @@ public class LayoutActivityExample extends AppCompatActivity implements ButtonCo
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_layout_example);
+        avanti=findViewById(R.id.avant);
     }
 
+    //SALVA DATI ACTIVITY AD UN CAMBIAMENTO DI STATO
     @Override
     protected void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
@@ -53,6 +59,7 @@ public class LayoutActivityExample extends AppCompatActivity implements ButtonCo
             input.setText(value);
         }
 
+        //ESEMPIO DI AGGIUNTA FRAGMENT IN MANIERA PROGRAMMATICA
         FragmentManager manager = getFragmentManager();
         FragmentTransaction transaction = manager.beginTransaction();
         lista = new ButtonsFragment();
@@ -61,12 +68,15 @@ public class LayoutActivityExample extends AppCompatActivity implements ButtonCo
 
         Button indietro = findViewById(R.id.invia);
 
+
         indietro.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
                 String value = input.getText().toString();
 
+                //ESEMPIO DI CODICE PER IL RITORNO DEI DATI AD UNA ACTIVITY CHIAMANTE CHE HA UTILIZZATO IL METODO
+                //START_ACTIVITY_FOR_RESULT
                 if (!value.equals("")) {
                     Intent ritorno = new Intent();
                     ritorno.putExtra("valore", value);
@@ -76,12 +86,33 @@ public class LayoutActivityExample extends AppCompatActivity implements ButtonCo
                 }
 
                 LayoutActivityExample.this.finish();
+                //
+            }
+        });
+
+        CheckBox checkbox = findViewById(R.id.checkbox1);
+
+        checkbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                if(b)
+                        Log.d("log","active");
+                    else
+                        Log.d("log","unchecked");
+            }
+        });
+
+        avanti.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent layoutactivity = new Intent(getApplicationContext(),ActivityInputs.class);
+                startActivity(layoutactivity);
             }
         });
     }
 
 
-
+    // CODICE DI RIPRISTINO ACTIVITY DA CAMBIAMENTO DI STATO
     @Override
     protected void onSaveInstanceState(@NonNull Bundle outState) {
 
@@ -91,6 +122,7 @@ public class LayoutActivityExample extends AppCompatActivity implements ButtonCo
         super.onSaveInstanceState(outState);
     }
 
+    // METODO SOVRASCRITTO DELL'INTERFACCIA DI UN FRAGMENT PER COMUNICAZIONE ACTIVITY FRAGMENT
     @Override
     public void setButton(String active) {
         FragmentManager manager = getFragmentManager();
