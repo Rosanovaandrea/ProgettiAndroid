@@ -1,5 +1,7 @@
 package com.example.myapplication;
 
+import static android.provider.ContactsContract.Data.CONTENT_URI;
+
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -16,7 +18,8 @@ import android.widget.Button;
 
 public class IntentActivity extends AppCompatActivity {
 
-    public static final int NUMBER = 1;
+    public static final int CONTENT_URI_1 = 1;
+    public static final int CONTENT_URI_2 = 2;
     Button geoIntentButton;
     Button pickContactButtonIntent;
 
@@ -40,7 +43,7 @@ public class IntentActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent pickContactActivity = new Intent(Intent.ACTION_PICK, ContactsContract.Contacts.CONTENT_URI);
-                startActivityForResult(pickContactActivity,NUMBER);
+                startActivityForResult(pickContactActivity,CONTENT_URI_2);
             }
         });
 
@@ -51,16 +54,36 @@ public class IntentActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if( requestCode == NUMBER && resultCode == RESULT_OK ){
+        if( requestCode == CONTENT_URI_1 && resultCode == RESULT_OK ){
             Uri uriContatto = data.getData();
             ContentResolver contentProvider = getContentResolver();
 
-            Cursor contatto = contentProvider.query(uriContatto,
-                    null
-                    ,null,null);
+            Cursor contatto = contentProvider.query(uriContatto, null,null,null);
             contatto.moveToFirst();
+
             int colonna = contatto.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME);
             Log.d("intent activity",contatto.getString(colonna));
+
+        }
+
+        if( requestCode == CONTENT_URI_2 && resultCode == RESULT_OK ){
+
+            Uri uriContatto = data.getData();
+            ContentResolver resolver = getContentResolver();
+
+            Cursor idContatto = resolver.query(uriContatto, null, null,null, null);
+            idContatto.moveToFirst();
+            String id = idContatto.getString((int) idContatto.getColumnIndex(ContactsContract.Contacts._ID));
+
+            String whereClausure = ContactsContract.Contacts._ID+"= ? AND "+ContactsContract.Data.MIMETYPE+"= ?";
+            String[] whereArgs = { id, ContactsContract.CommonDataKinds.StructuredPostal.CONTENT_ITEM_TYPE };
+
+            idContatto = resolver.query(ContactsContract.Data.CONTENT_URI, null,whereClausure, whereArgs,null);
+
+            idContatto.moveToFirst();
+
+            int colonna = idContatto.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME);
+            Log.d("intentActivity",idContatto.getString(colonna));
 
         }
 
